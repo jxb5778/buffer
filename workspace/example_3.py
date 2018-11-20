@@ -1,6 +1,9 @@
 from buffer import Buffer
 import pandas as pd
 
+# Here we're expanding the scope of two Buffer variables, and exploring DataFrame transformations
+# Best practice -> pass Buffers to functions, don't pass and return DataFrames
+
 
 def func_1(buff_1, buff_2):
     buff_1.value = pd.DataFrame({'A': [1, 2, 3, 4, 5], 'B': [1, 2, 3, 4, 5]})
@@ -9,12 +12,11 @@ def func_1(buff_1, buff_2):
 
 
 def func_2(buff_1, buff_2):
-    buff_1.value = pd.concat([buff_1.value, buff_2.value])
+    buff_1.value = [buff_1.value, buff_2.value]
+    buff_1.value = pd.concat(buff_1.value)
+    buff_1.value['C'] = buff_1.value['A'] + buff_1.value['B']
     buff_2.value = None
     return
-
-
-# Here we're expanding the scope of buff_a and buff_b
 
 
 buff_a = Buffer()

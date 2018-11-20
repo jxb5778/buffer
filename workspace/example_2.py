@@ -1,28 +1,40 @@
 from buffer import Buffer
-import pandas as pd
 
-"""
-The reader Buffer will be used to hold a DataFrame that was just read in from a csv.
-Each iteration of the loop will overwrite the value in reader.value -> forgetful worker pattern
-
-Pandas concat is slow at scale, so we want to reduce the number of concats
-Instead we append query results to a list, and then perform one pd.concat at the end
-"""
-
-DIRECTORY = 'C:/'
-file_list = ['{0}example_file_{1}.csv'.format(DIRECTORY, index) for index in range(10)]
-
-reader = Buffer()
-query_return = Buffer()
-query_return.value = []
+# We'll start of by learning how to set the value property of a Buffer
 
 
-# Look through all the files and find the results where Column == 12345
-search_value = 12345
+def main():
+    pass
 
-for file in file_list:
-    reader.value = pd.read_csv(file)
-    reader.value = reader.value.query('Column == @search_value')
-    query_return.value.append(reader.value)
+if __name__ == '__main__':
+    import __main__
 
-query_return.value = pd.concat(query_return.value)
+    buff = Buffer()
+    buff.value = 5
+    print(buff.value)
+
+    print(__main__.__dict__)
+
+    """
+    Creating a Buffer identifies a specific location in memory we can store its value attribute
+    We can use this to our advantage when we store DataFrames in value -> explored further in Example 3
+    
+    Output ->
+    
+    {
+    '__name__': '__main__', 
+    '__doc__': None, 
+    '__package__': None, 
+    '__loader__': <_frozen_importlib_external.SourceFileLoader object at 0x038EDC90>, 
+    '__spec__': None, 
+    '__annotations__': {}, 
+    '__builtins__': <module 'builtins' (built-in)>, 
+    '__file__': 'C:/Users/bergj/PycharmProjects/buffer/workspace/example_2.py', 
+    '__cached__': None, 
+    'Buffer': <class 'buffer.Buffer'>, 
+    'main': <function main at 0x03B6B030>, 
+    '__main__': <module '__main__' from 'C:/Users/bergj/PycharmProjects/buffer/workspace/example_2.py'>, 
+    'buff': <buffer.Buffer object at 0x038EDD10>
+    }
+    
+    """
